@@ -4,6 +4,7 @@
   "description": "Buyer's home page for tinnat.com",
   "main": "index.js",
   "scripts": {
+    "create:cert": "openssl req -nodes -new -x509 -keyout server.key -out server.cert",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "react-scripts start eslint-disable-next-line",
     "build": "react-scripts build eslint-disable-next-line",
@@ -32,6 +33,7 @@
     "express-session": "^1.17.0",
     "fs": "0.0.1-security",
     "googleapis": "^52.1.0",
+    "https": "^1.0.0",
     "lodash": "^4.17.15",
     "memcached": "^2.2.2",
     "memjs": "^1.2.2",
