@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import Snackbar from '@material-ui/core/Snackbar';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import TextField from '../common/elements/TextField';
 import SmallButtonGroup from '../common/elements/SmallButtonGroup';
 import SmallImageButtonGroup from '../common/elements/SmallImageButtonGroup';
 import Amount from '../common/elements/Amount';
@@ -16,11 +17,11 @@ import InstantOrderModal from '../../modals/instant-order/InstantOrderModal';
 import ProductDetailModal from '../../modals/product-detail/ProductDetailModal';
 import { productAdvancedDetailsMapper } from '../../lib/mappers';
 import {
-    createInstantOrder
+    createInstantOrder,
+    updateDeliveryPincode
 } from '../../actions';
 
 export default class ProductDetail extends Component {
-
     constructor(props) {
         super(props);
         this.state = new ProductDetailModal().getDefaultData();
@@ -89,15 +90,16 @@ export default class ProductDetail extends Component {
     // }
 
     async instantPurchase() {
-        const { selection, stockQuantity } = this.state;
+        const { selection, stockQuantity, delivery } = this.state;
         if (selection.color && selection.size) {
-            if (stockQuantity === 'UNLIMITED' || parseInt(stockQuantity) > 0) {
+            if ((stockQuantity === 'UNLIMITED' || parseInt(stockQuantity) > 0) && delivery && delivery.status === 'DELIVERABLE') {
                 const instantOrderModal = new InstantOrderModal();
                 instantOrderModal.updateCreateDataFromState(this.state);
                 try {
                     const response = await createInstantOrder(instantOrderModal.buildCreateOrderRequest());
-                    if (response && response.instant_purchase_url) {
-                        window.location.href = response.instant_purchase_url;
+                    if (response && response.status === 'COMPLETED') {
+                        const next = response.links.filter(link => link.name === 'INSTANT_PURCHASE')
+                        window.location.href = next[0].href;
                     } else {
                         await this.notify('There was an error while creating the order.');
                     }
@@ -105,7 +107,15 @@ export default class ProductDetail extends Component {
                     await this.notify('There was an error while creating the order.');
                 }
             } else {
-                await this.notify('This product is out of stock.');
+                if (!delivery) {
+                    await this.notify('Enter delivery pincode to proceed');
+                } else if (delivery.status === 'NOT_DELIVERABLE') {
+                    await this.notify('Sorry, we don\'t deliver to this area');
+                } else if (parseInt(stockQuantity) <= 0) {
+                    await this.notify('Sorry, this product is out of stock');
+                } else {
+                    await this.notify('There was an error while creating the order.');
+                }
             }
         } else {
             await this.notify('Select a size and color of your choice.');
@@ -130,6 +140,18 @@ export default class ProductDetail extends Component {
         });
     }
 
+    async updatePincode() {
+        const { pincode } = this.state;
+        const response = await updateDeliveryPincode(pincode);
+        if (response && response.status === "COMPLETED") {
+            this.setState({ delivery: response.delivery, delivery_error: null });
+        } else if (response && response.error) {
+            this.setState({ delivery: null, delivery_error: response.error.description })
+        } else {
+            this.setState({ delivery: null, delivery_error: null })
+        }
+    }
+
     render() {
         const {
             data
@@ -141,7 +163,10 @@ export default class ProductDetail extends Component {
             stockQuantity,
             pictureLinks,
             notification,
-            selection
+            selection,
+            pincode,
+            delivery,
+            delivery_error
         } = this.state;
         return (
             <Container style={{ padding: '1em' }} maxWidth="lg">
@@ -165,7 +190,12 @@ export default class ProductDetail extends Component {
                                     }}
                                 />
                                 <LargeBtn
-                                    disabled={!(stockQuantity === 'UNLIMITED' || parseInt(stockQuantity) > 0)}
+                                    disabled={
+                                        !((stockQuantity === 'UNLIMITED' ||
+                                            parseInt(stockQuantity) > 0) &&
+                                            delivery &&
+                                            delivery.status === "DELIVERABLE")
+                                    }
                                     onClick={this.instantPurchase}
                                     name="BUY NOW"
                                     color="rgb(247, 36, 52)"
@@ -293,6 +323,59 @@ export default class ProductDetail extends Component {
                                     <Divider className="t-extend-hr-2" />
                                 </>
                             }
+                            {
+                                <>
+                                    <Box m={2}> <Typography variant="button" text={"Delivery"} /> </Box>
+                                    <Box m={2}>
+                                        <Grid container>
+                                            <Grid item xs={6}>
+                                                <TextField
+                                                    required
+                                                    type="number"
+                                                    label="Pincode"
+                                                    variant="filled"
+                                                    value={pincode}
+                                                    onChange={(pincode) => this.setState({ pincode: pincode })}
+                                                    onKeyPress={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            this.updatePincode();
+                                                        }
+                                                    }}
+                                                />
+                                                {
+                                                    delivery_error &&
+                                                    <Typography text={delivery_error} variant="caption" style={{ color: "rgb(247, 36, 52)" }} />
+                                                }
+                                                <Typography text="Type your pincode and press enter" variant="caption" />
+                                            </Grid>
+                                        </Grid>
+                                    </Box>
+                                    {
+                                        delivery && delivery.status === "DELIVERABLE" &&
+                                        <Box m={2}>
+                                            <Typography
+                                                icon="local_shipping"
+                                                text={delivery.formatted.delivery_string}
+                                                variant="body2"
+                                                style={{ color: "rgb(5, 153, 54)" }}
+                                            />
+                                        </Box>
+                                    }
+                                    {
+                                        delivery && delivery.status === "NOT_DELIVERABLE" &&
+                                        <Box m={2}>
+                                            <Typography
+                                                icon="local_shipping"
+                                                text="Sorry, this item is not deliverable to the address."
+                                                variant="body2"
+                                                style={{ color: "rgb(247, 36, 52)" }}
+                                            />
+                                        </Box>
+                                    }
+                                    <Divider className="t-extend-hr-2" />
+                                </>
+                            }
+
                             {
                                 data.advanced_details &&
                                 <>

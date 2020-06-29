@@ -14,4 +14,26 @@ module.exports = {
         SUCCESS: 'SUCCESS',
         FAILURE: 'FAILURE'
     },
+    CURRENCY: {
+        INR: 'INR'
+    },
+    INTENT: {
+        CAPTURE: 'CAPTURE',
+    },
+    COUNTRY_CODE: {
+        IN: 'IN'
+    },
+    SOFT_DESCRIPTOR: 'Tinnos India',
+    ORDER_INIT: 'INITIAL',
+    RECEIPT_PREFIX: 'R-',
+    ORDER_PREFIX: 'ORDER-',
+    ORDER_PAYMENT_PENDING: 'PAYMENT_PENDING',
+    ORDER_COMPLETED: 'COMPLETED',
+    COMPLETED: 'COMPLETED',
+    MAILSERVICE: {
+        NOREPLY: 'noreply',
+        ORDERCONFIRMATION: 'orderconfirmation'
+    },
+    DELIVERABLE: 'DELIVERABLE',
+    NOT_DELIVERABLE: 'NOT_DELIVERABLE'
 };

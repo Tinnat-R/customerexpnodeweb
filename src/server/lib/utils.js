@@ -44,9 +44,39 @@ const getFormattedProductInfo = (product) => {
     }
 };
 
+const constructDeliveryString = (time) => {
+    if (time) {
+        time = parseInt(time);
+        time = Math.ceil(time / (3600 * 24));
+        return `Confirmed delivery in ${time} days`
+    }
+    return null;
+}
+
+const constructDeliveryObj = (delivery) => {
+    if (delivery && delivery.pincode) {
+        return {
+            status: delivery.status,
+            address: {
+                place: delivery.place,
+                region: delivery.region,
+                district: delivery.district,
+                state: delivery.state,
+                pincode: delivery.pincode
+            },
+            delivery_time: delivery.deliveryTime,
+            formatted: {
+                delivery_string: constructDeliveryString(delivery.deliveryTime)
+            }
+        };
+    }
+    return null;
+}
+
 module.exports = {
     getProductUrl: getProductUrl,
     constructProductLink: constructProductLink,
     getDefaultThemeObj: getDefaultThemeObj,
-    getFormattedProductInfo: getFormattedProductInfo
+    getFormattedProductInfo: getFormattedProductInfo,
+    constructDeliveryObj: constructDeliveryObj
 };
