@@ -39,7 +39,21 @@ module.exports = {
         RAZORPAY_PAYMENT_COMPLETE: 'razorpay_payment_complete',
         UPDATE_DELIVERY_PINCODE: 'update_delivery_pincode',
         GET_PAYMENT_ACTIVITY: 'get_payment_activity',
+        GET_PAYMENT_ACTIVITY_INTERNAL: 'get_payment_activity_internal',
         SEARCH_TRANSACTIONS: 'search_transactions'
+    },
+    WEB_NAME: {
+        GET_PRODUCT: 'get_product',
+        WHOAMI: 'whoami',
+        HOME: 'home',
+        ABOUT: 'about',
+        GET_PRODUCTS: 'get_products',
+        HELP: 'help',
+        CONTACTUS: 'contact_us',
+        INSTANT_PURCHASE_ORDER: 'instant_purchase_order',
+        INSTANT_PURCHASE_PAYMENT: 'instant_purchase_payment',
+        INSTANT_PURCHASE_CONFIRMATION: 'instant_purchase_confirmation',
+        GET_PAYMENT_ACTIVITY: 'get_payment_activity'
     },
     SOFT_DESCRIPTOR: 'Tinnos India',
     ORDER_INIT: 'INITIAL',
@@ -56,6 +70,10 @@ module.exports = {
     NOT_DELIVERABLE: 'NOT_DELIVERABLE',
     ORDER_PAYMENT: 'ORDER_PAYMENT',
     PERSONAL_ACCOUNT: 'PERSONAL_ACCOUNT',
+    GUEST: 'GUEST',
+    PERSONAL: 'PERSONAL',
+    BUSINESS: 'BUSINESS',
+    ADMIN: 'ADMIN',
     FACEBOOK: 'FACEBOOK',
     RAZORPAY: 'RAZORPAY'
 };

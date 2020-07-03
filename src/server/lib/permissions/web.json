@@ -1,90 +1,75 @@
 {
+    "get_product": {
+        "permissions": [
+            "GUEST",
+            "ADMIN",
+            "PERSONAL",
+            "BUSINESS"
+        ]
+    },
+    "whoami": {
+        "permissions": [
+            "GUEST",
+            "ADMIN",
+            "PERSONAL",
+            "BUSINESS"
+        ]
+    },
+    "home": {
+        "permissions": [
+            "GUEST",
+            "ADMIN",
+            "PERSONAL",
+            "BUSINESS"
+        ]
+    },
+    "about": {
+        "permissions": [
+            "GUEST",
+            "ADMIN",
+            "PERSONAL",
+            "BUSINESS"
+        ]
+    },
     "get_products": {
         "permissions": [
+            "GUEST",
             "ADMIN",
             "PERSONAL",
             "BUSINESS"
         ]
     },
-    "get_featured_products": {
+    "help": {
         "permissions": [
+            "GUEST",
             "ADMIN",
             "PERSONAL",
             "BUSINESS"
         ]
     },
-    "get_filtered_products": {
+    "contactus": {
         "permissions": [
+            "GUEST",
             "ADMIN",
             "PERSONAL",
             "BUSINESS"
         ]
     },
-    "get_products_by_category": {
-        "permissions": [
-            "ADMIN",
-            "PERSONAL",
-            "BUSINESS"
-        ]
-    },
-    "add_product": {
-        "permissions": [
-            "ADMIN"
-        ]
-    },
-    "get_product_by_id": {
+    "instant_purchase_order": {
         "permissions": [
             "ADMIN",
             "PERSONAL",
             "BUSINESS"
         ]
     },
-    "edit_product_by_id": {
-        "permissions": [
-            "ADMIN"
-        ]
-    },
-    "remove_product_by_id": {
-        "permissions": [
-            "ADMIN"
-        ]
-    },
-    "create_instant_order": {
+    "instant_purchase_payment": {
         "permissions": [
             "ADMIN",
             "PERSONAL",
             "BUSINESS"
         ]
     },
-    "get_order_by_id": {
-        "permissions": [
-            "ADMIN",
-            "PERSONAL",
-            "BUSINESS"
-        ]
-    },
-    "patch_order_by_id": {
-        "permissions": [
-            "ADMIN",
-            "PERSONAL",
-            "BUSINESS"
-        ]
-    },
-    "get_payment_plan": {
-        "permissions": [
-            "ADMIN",
-            "PERSONAL",
-            "BUSINESS"
-        ]
-    },
-    "razorpay_payment_complete": {
-        "permissions": [
-            "ADMIN",
-            "PERSONAL",
-            "BUSINESS"
-        ]
-    },
-    "update_delivery_pincode": {
+    "instant_purchase_confirmation": {
         "permissions": [
             "ADMIN",
             "PERSONAL",
@@ -96,16 +81,6 @@
             "ADMIN",
             "PERSONAL",
             "BUSINESS"
-        ]
-    },
-    "search_transactions": {
-        "permissions": [
-            "ADMIN"
-        ]
-    },
-    "get_payment_activity_internal": {
-        "permissions": [
-            "ADMIN"
         ]
     }
 }
