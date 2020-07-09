@@ -7,10 +7,10 @@ import config from '../configs/config.json';
 
 const environment = config.environment;
 
-export const getPaymentActivity = (id) => {
-    console.log('[INFO]', 'action::getPaymentActivity');
-    console.log('[INFO]', 'request', `transaction_id=${id}`);
-    return fetch(config[environment].api.v1_get_payment_activity.uri + id, {
+export const getKPIs = () => {
+    console.log('[INFO]', 'action::getKPIs');
+    let uri = config[environment].api.v1_get_kpis.uri;
+    return fetch(uri, {
         method: 'GET',
         headers: getAPIHeaders(),
         redirect: 'follow'
@@ -20,4 +20,4 @@ export const getPaymentActivity = (id) => {
         .catch(error => commonErrorHandler(error));
 };
 
-export default getPaymentActivity;
+export default getKPIs;
