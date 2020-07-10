@@ -1,19 +1,19 @@
 const uniqid = require('uniqid');
-const LoggerModal = require('../modals/LoggerModal');
-const { X_TINNAT_SECURITY_CONTEXT } = require('../lib/constants');
-const { INJECT_LOGGER_CONTROLLER } = require('../lib/constants/logging-constants');
 const cache = require('../cache');
+const LoggerModal = require('../modals/LoggerModal');
+const {
+    X_TINNAT_SECURITY_CONTEXT,
+    X_TINNAT_DEBUG_ID,
+    API,
+    WEB
+} = require('../lib/constants');
 
 const injectLogger = (req, res, next) => {
-    console.log(INJECT_LOGGER_CONTROLLER, `injecting logger to the request`);
     const securityContext = JSON.parse(req && req.headers && req.headers[X_TINNAT_SECURITY_CONTEXT] || '{}');
     let debugId = uniqid('d-').toLowerCase();
-    console.log(INJECT_LOGGER_CONTROLLER, `new debug id genereated: ${debugId}`);
     if (securityContext && securityContext.debugId) {
-        console.log(INJECT_LOGGER_CONTROLLER, `received debug id in security context: ${securityContext.debugId}`);
         debugId = securityContext.debugId;
     }
-    console.log(INJECT_LOGGER_CONTROLLER, `debug id for this request: ${debugId}`);
     req.debugId = debugId;
     let _consoleLog;
     if (!_consoleLog) {
@@ -21,18 +21,122 @@ const injectLogger = (req, res, next) => {
     }
     console.log = function () {
         let args = Array.from(arguments);
-        const log = new Date().getTime() + '$$' + args.join('$$');
-        let logs = cache.get(debugId) || '';
-        logs = logs + log + '\n$';
-        cache.put(debugId, logs);
+        let log = {};
+        log.status = 0;
+        log.time_stamp = new Date().getTime();
+        if (args.length > 0) {
+            log.component = args[0];
+        }
+        if (args.length === 2) {
+            log.operation = 'LOG';
+            log.additional_data = args[1];
+        }
+        if (args.length === 3) {
+            log.operation = args[1];;
+            log.additional_data = args[2];
+        }
+        let _logs = cache.get(debugId) || [];
+        _logs.push(log);
+        cache.put(debugId, _logs);
         _consoleLog.apply(console, args);
     };
-    res.set('x-tinnat-debug-id', debugId);
+    let _consoleInfo;
+    if (!_consoleInfo) {
+        _consoleInfo = console.info;
+    }
+    console.info = function () {
+        let args = Array.from(arguments);
+        let log = {};
+        log.status = 1;
+        log.time_stamp = new Date().getTime();
+        if (args.length > 0) {
+            log.component = args[0];
+        }
+        if (args.length === 2) {
+            log.operation = 'INFO';
+            log.additional_data = args[1];
+        }
+        if (args.length === 3) {
+            log.operation = args[1];;
+            log.additional_data = args[2];
+        }
+        let _logs = cache.get(debugId) || [];
+        _logs.push(log);
+        cache.put(debugId, _logs);
+        _consoleInfo.apply(console, args);
+    };
+    let _consoleWarn;
+    if (!_consoleWarn) {
+        _consoleWarn = console.warn;
+    }
+    console.warn = function () {
+        let args = Array.from(arguments);
+        let log = {};
+        log.status = 2;
+        log.time_stamp = new Date().getTime();
+        if (args.length > 0) {
+            log.component = args[0];
+        }
+        if (args.length === 2) {
+            log.operation = 'WARNING';
+            log.additional_data = args[1];
+        }
+        if (args.length === 3) {
+            log.operation = args[1];;
+            log.additional_data = args[2];
+        }
+        let _logs = cache.get(debugId) || [];
+        _logs.push(log);
+        cache.put(debugId, _logs);
+        _consoleWarn.apply(console, args);
+    };
+    let _consoleError;
+    if (!_consoleError) {
+        _consoleError = console.error;
+    }
+    console.error = function () {
+        let args = Array.from(arguments);
+        let log = {};
+        log.status = 3;
+        log.time_stamp = new Date().getTime();
+        if (args.length > 0) {
+            log.component = args[0];
+        }
+        if (args.length === 2) {
+            log.operation = 'ERROR';
+            log.additional_data = args[1];
+        }
+        if (args.length === 3) {
+            log.operation = args[1];;
+            log.additional_data = args[2];
+        }
+        let _logs = cache.get(debugId) || [];
+        _logs.push(log);
+        cache.put(debugId, _logs);
+        _consoleError.apply(console, args);
+    };
+    res.set(X_TINNAT_DEBUG_ID, debugId);
     const _resStatus = res.status;
     res.status = function (statusCode) {
-        new LoggerModal(debugId).persist();
+        console.log(API, 'status_code', statusCode);
+        const loggerModal = new LoggerModal(debugId);
+        loggerModal.persist();
         return _resStatus.call(this, statusCode);
     };
+    const _resSendFile = res.sendFile;
+    res.sendFile = function (file) {
+        console.log(WEB, 'response', `rendering view: ${file}`);
+        const loggerModal = new LoggerModal(debugId);
+        loggerModal.persist();
+        return _resSendFile.call(this, file);
+    }
+    const _resRedirect = res.redirect;
+    res.redirect = function (url) {
+        console.log(WEB, 'redirect_url', url);
+        const loggerModal = new LoggerModal(debugId);
+        loggerModal.persist();
+        return _resRedirect.call(this, url);
+    }
     return next();
 };
 
