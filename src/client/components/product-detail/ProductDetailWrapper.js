@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Header from '../header/Header';
 import ComponentLoader from '../common/loaders/ComponentLoader';
-import WebInternalServerError from '../common/errors/WebInternalServerError';
-import Component404 from '../common/errors/Component404';
+import WebInternalServerError from '../common/errors/widgets/WebInternalServerError';
+import Component404 from '../common/errors/widgets/Component404';
 import ProductDetail from './ProductDetail';
 import TrendingProducts from '../trending/TrendingProducts';
 import RecentProducts from '../recent-products/RecentProducts';
@@ -11,7 +11,8 @@ import {
     OPERATION_LOADING,
     OPERATION_LOADING_COMPLETED,
     OPERATION_LOADING_ERROR,
-    PAGE_LOADING_FAILED
+    PAGE_LOADING_FAILED,
+    PRODUCT_NOT_FOUND
 } from '../../lib/constants';
 
 export default class ProductDetailWrapper extends Component {
@@ -27,24 +28,24 @@ export default class ProductDetailWrapper extends Component {
 
     async componentDidMount() {
         const productid = this.props.match.params.productid;
-        try {
-            const response = await getProductById(productid);
-            if (response && response.error) {
-                this.setState({
-                    status: OPERATION_LOADING_ERROR,
-                    error: response.error
-                });
-            } else {
-                this.setState({
-                    status: OPERATION_LOADING_COMPLETED,
-                    data: response
-                });
-            }
-        } catch (error) {
-            this.setState({
+        const response = await getProductById(productid);
+        if (response && response.id) {
+            await this.setState({
+                status: OPERATION_LOADING_COMPLETED,
+                data: response
+            });
+        }
+        else if (response && response.error &&
+            response.error.message === PRODUCT_NOT_FOUND) {
+            await this.setState({
+                status: OPERATION_LOADING_ERROR,
+                error: response.error
+            });
+        } else {
+            await this.setState({
                 status: PAGE_LOADING_FAILED,
                 data: null,
-                error: 'Unknown error'
+                error: 'Data not found'
             });
         }
     }
@@ -55,7 +56,7 @@ export default class ProductDetailWrapper extends Component {
             <>
                 <Header />
                 {status === OPERATION_LOADING && <ComponentLoader />}
-                {status === OPERATION_LOADING_ERROR && <Component404 error={error} />}
+                {status === OPERATION_LOADING_ERROR && <Component404 reason={`The product you're looking for doesn't exists.`} />}
                 {status === OPERATION_LOADING_COMPLETED &&
                     <>
                         <ProductDetail data={data} />
