@@ -135,7 +135,7 @@ const getWebName = (req) => {
     if (/^\/about$/.test(url)) {
         return WEB_NAME.ABOUT;
     }
-    if (/^\/product\/.*$/.test(url)) {
+    if (/^\/products$/.test(url)) {
         return WEB_NAME.GET_PRODUCTS;
     }
     if (/^\/help$/.test(url)) {
@@ -164,6 +164,27 @@ const getWebName = (req) => {
     }
     if (/^\/notfound$/.test(url)) {
         return WEB_NAME.NOT_FOUND;
+    }
+    if (/^\/login.*$/.test(url)) {
+        return WEB_NAME.LOGIN;
+    }
+    if (/^\/business\/activity\/transactions$/.test(url)) {
+        return WEB_NAME.BUSINESS_ACTIVITY;
+    }
+    if (/^\/business\/activity\/transaction\/.*$/.test(url)) {
+        return WEB_NAME.BUSINESS_ACTIVITY;
+    }
+    if (/^\/business\/warehouse\/products$/.test(url)) {
+        return WEB_NAME.BUSINESS_VIEW_PRODUCTS;
+    }
+    if (/^\/business\/warehouse\/product\/add$/.test(url)) {
+        return WEB_NAME.BUSINESS_ADD_PRODUCT;
+    }
+    if (/^\/business\/warehouse\/product\/edit\/.*$/.test(url)) {
+        return WEB_NAME.BUSINESS_UPDATE_PRODUCT;
+    }
+    if (/^\/business\/warehouse\/product\/view\/.*$/.test(url)) {
+        return WEB_NAME.BUSINESS_VIEW_PRODUCT;
     }
     return null;
 };
@@ -223,6 +244,9 @@ const getAPIName = (req) => {
     if (/^\/business\/activity\/payment\/.*$/.test(url)) {
         return API_NAME.GET_PAYMENT_ACTIVITY_INTERNAL;
     }
+    if (/^\/business\/products\/filter$/.test(url)) {
+        return API_NAME.BUSINESS_PRODUCT_FILTER;
+    }
     if (/^\/business\/kpis$/.test(url)) {
         return API_NAME.GET_KPIS;
     }
@@ -243,6 +267,10 @@ const computeRedirectSuccessUrl = (path) => {
     return encodeURIComponent(redirectBaseUrl);
 };
 
+const getDefaultRedirectUrl = () => {
+    return config.tinnat[environment].url.redirect_base;
+};
+
 module.exports = {
     getProductUrl: getProductUrl,
     constructProductLink: constructProductLink,
@@ -254,5 +282,6 @@ module.exports = {
     getAPIName: getAPIName,
     checkUserWebPermission: checkUserWebPermission,
     computeRedirectSuccessUrl: computeRedirectSuccessUrl,
-    computeRedirectErrorUrl: computeRedirectErrorUrl
+    computeRedirectErrorUrl: computeRedirectErrorUrl,
+    getDefaultRedirectUrl: getDefaultRedirectUrl
 };

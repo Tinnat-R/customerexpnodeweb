@@ -43,7 +43,8 @@ module.exports = {
         GET_PAYMENT_ACTIVITY_INTERNAL: 'get_payment_activity_internal',
         SEARCH_TRANSACTIONS: 'search_transactions',
         GET_KPIS: 'get_kpis',
-        GET_LOGS: 'get_logs'
+        GET_LOGS: 'get_logs',
+        BUSINESS_PRODUCT_FILTER: 'business_filter_products'
     },
     WEB_NAME: {
         GET_PRODUCT: 'get_product',
@@ -59,7 +60,13 @@ module.exports = {
         GET_PAYMENT_ACTIVITY: 'get_payment_activity',
         BUSINESS_DASHBOARD: 'business_dashboard',
         IDSEARCH: 'idsearch',
-        NOT_FOUND: 'not_found'
+        NOT_FOUND: 'not_found',
+        LOGIN: 'login',
+        BUSINESS_ACTIVITY: 'business_activity',
+        BUSINESS_ADD_PRODUCT: 'business_add_product',
+        BUSINESS_UPDATE_PRODUCT: 'business_update_product',
+        BUSINESS_VIEW_PRODUCT: 'business_view_product',
+        BUSINESS_VIEW_PRODUCTS: 'business_view_products'
     },
     SOFT_DESCRIPTOR: 'Tinnos India',
     ORDER_INIT: 'INITIAL',
