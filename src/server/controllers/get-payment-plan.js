@@ -25,8 +25,7 @@ const getPaymentPlan = async (req, res) => {
             error: errorConstants.ORDER_NOT_FOUND
         });
     }
-    if (instantPurchaseModal.getPaymentInformation() &&
-        instantPurchaseModal.getPersonalInformation().status === COMPLETED) {
+    if (instantPurchaseModal.getOrderStatus() === COMPLETED) {
         return res.status(400).send({
             error: errorConstants.ORDER_ALREADY_PURCHASED
         });
@@ -52,7 +51,6 @@ const getPaymentPlan = async (req, res) => {
                     status: deliveryData.status,
                     deliveryTime: deliveryData.deliveryTime
                 });
-
             }
         }
     }
@@ -61,6 +59,7 @@ const getPaymentPlan = async (req, res) => {
             error: errorConstants.ORDER_NOT_FOUND
         });
     }
+    await instantPurchaseModal.updateDelivery(delivery);
     const paymentPlanModel = new PaymentPlanModel();
     paymentPlanModel.setOrderId(req.params.id);
     paymentPlanModel.setOrderDetails(instantPurchaseModal.getOrder());

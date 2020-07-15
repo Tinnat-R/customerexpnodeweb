@@ -9,12 +9,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import FaceIcon from '@material-ui/icons/Face';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '../common/elements/Typography';
+import Typography from '../../common/elements/Typography';
 
 const useStyles = makeStyles({
     root: {
-        width: 200,
-        color: 'rgb(247, 36, 52)'
+        width: 175,
+        backgroundColor: 'rgb(247, 36, 52)',
+        color: '#fff'
     },
 });
 
@@ -52,10 +53,10 @@ export default function LoggedInUser(props) {
             <Button
                 ref={anchorRef}
                 aria-controls={open ? 'menu-list-grow' : undefined}
-                aria-haspopup="true"
+                aria-haspopup='true'
                 onClick={handleToggle}
                 style={{ color: '#fff' }} >
-                <IconButton aria-label="user" style={{ color: '#fff' }} >
+                <IconButton aria-label='user' style={{ color: '#fff' }} >
                     <FaceIcon />
                 </IconButton>
                 {props.name}
@@ -64,13 +65,19 @@ export default function LoggedInUser(props) {
                 {({ TransitionProps, placement }) => (
                     <Grow
                         {...TransitionProps}
-                        style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                    >
+                        className={classes.root}
+                        style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
                         <Paper>
                             <ClickAwayListener onClickAway={handleClose}>
-                                <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                                <MenuList autoFocusItem={open} id='menu-list-grow' onKeyDown={handleListKeyDown}>
+                                    <MenuItem className={classes.root} onClick={(e) => handleClose(e, 'account')}>
+                                        <Typography text='Account' variant='button' icon='account_circle' />
+                                    </MenuItem>
+                                    <MenuItem className={classes.root} onClick={(e) => handleClose(e, 'orders')}>
+                                        <Typography text='Orders' variant='button' icon='local_mall' />
+                                    </MenuItem>
                                     <MenuItem className={classes.root} onClick={(e) => handleClose(e, 'logout')}>
-                                        <Typography text="Logout" variant="button" />
+                                        <Typography text='Logout' variant='button' icon='exit_to_app' />
                                     </MenuItem>
                                 </MenuList>
                             </ClickAwayListener>

@@ -4,23 +4,9 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import Button from '@material-ui/core/Button';
-import { withStyles, ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import LoginWithFacebook from './LoginWithFacebook';
-import Typography from '../common/elements/Typography';
-
-const ActionButton = withStyles(() => ({
-    root: {
-        color: '#fff',
-        backgroundColor: 'rgb(247, 36, 52)',
-        border: '2px solid rgb(247, 36, 52)',
-        '&:hover': {
-            color: 'rgb(247, 36, 52)',
-            border: '2px solid rgb(247, 36, 52)',
-            backgroundColor: '#fff'
-        },
-    },
-}))(Button);
+import Typography from '../../../common/elements/Typography';
 
 export default class Login extends Component {
     constructor(props) {
@@ -46,9 +32,9 @@ export default class Login extends Component {
     render() {
         const { open } = this.state;
         return (
-            <Dialog fullWidth onClose={this.handleClose} aria-labelledby="login-dialog" open={open}>
-                <DialogTitle id="login-dialog">
-                    <Typography align="center" icon="lock" variant="h6" text="Securely login to www.tinnat.com" />
+            <Dialog fullWidth onClose={this.handleClose} aria-labelledby='login-dialog' open={open}>
+                <DialogTitle id='login-dialog'>
+                    <Typography align='center' icon='lock' variant='button' text='Securely login to www.tinnat.com' />
                 </DialogTitle>
                 <DialogContent>
                     <Grid container>
@@ -59,9 +45,7 @@ export default class Login extends Component {
                 </DialogContent>
                 <DialogActions>
                     <ThemeProvider>
-                        <ActionButton onClick={this.handleClose} color="primary" autoFocus>
-                            Continue as Guest
-                        </ActionButton>
+                        <Typography align='right' className='t-text-link-2' onClick={this.handleClose} text='No thanks, continue as Guest' />
                     </ThemeProvider>
                 </DialogActions>
             </Dialog>

@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import { withStyles, ThemeProvider } from '@material-ui/core/styles';
-import Login from './Login';
+import Login from './widgets/Login';
 
 const ActionButton = withStyles(() => ({
     root: {
@@ -29,14 +29,13 @@ export default class GuestUser extends Component {
 
     render() {
         const {
-            openLogin,
-            openSignup
+            openLogin
         } = this.state;
         return (
             <Grid container>
                 <Grid item>
                     <ThemeProvider>
-                        <ButtonGroup disableElevation variant="contained" style={{ color: '#fff' }}>
+                        <ButtonGroup disableElevation variant='contained' style={{ color: '#fff' }}>
                             <ActionButton onClick={() => this.setState({ openLogin: true })}>Login</ActionButton>
                             <ActionButton onClick={() => this.setState({ openSignup: true })}>Signup</ActionButton>
                         </ButtonGroup>

@@ -44,10 +44,14 @@ module.exports = {
         SEARCH_TRANSACTIONS: 'search_transactions',
         GET_KPIS: 'get_kpis',
         GET_LOGS: 'get_logs',
-        BUSINESS_PRODUCT_FILTER: 'business_filter_products'
+        BUSINESS_PRODUCT_FILTER: 'business_filter_products',
+        GET_ALL_PURCHASES: 'get_all_purchases',
+        GET_PURCHASE_BY_ID: 'get_purchase_by_id'
     },
     WEB_NAME: {
         GET_PRODUCT: 'get_product',
+        GET_ORDERS: 'account_activity_orders',
+        GET_ORDER_BY_ID: 'account_activity_order',
         WHOAMI: 'whoami',
         HOME: 'home',
         ABOUT: 'about',
@@ -69,11 +73,11 @@ module.exports = {
         BUSINESS_VIEW_PRODUCTS: 'business_view_products'
     },
     SOFT_DESCRIPTOR: 'Tinnos India',
-    ORDER_INIT: 'INITIAL',
-    RECEIPT_PREFIX: 'R-',
-    ORDER_PREFIX: 'ORDER-',
+    ORDER_CREATED: 'ORDER_CREATED',
     ORDER_PAYMENT_PENDING: 'PAYMENT_PENDING',
     ORDER_COMPLETED: 'COMPLETED',
+    RECEIPT_PREFIX: 'R-',
+    ORDER_PREFIX: 'ORDER-',
     COMPLETED: 'COMPLETED',
     MAILSERVICE: {
         NOREPLY: 'noreply',
@@ -81,6 +85,7 @@ module.exports = {
     },
     DELIVERABLE: 'DELIVERABLE',
     NOT_DELIVERABLE: 'NOT_DELIVERABLE',
+    DELIVERY_INITIATED: 'INITIATED',
     ORDER_PAYMENT: 'ORDER_PAYMENT',
     PERSONAL_ACCOUNT: 'PERSONAL_ACCOUNT',
     GUEST: 'GUEST',
